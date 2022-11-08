@@ -1,0 +1,20 @@
+REQUIREMENTS
+    1. View the list of issues
+    2. Can filter the issues by various parameters
+    3. Add new issues by supplying the initial values of the issue's fields
+    4. Update an issue by changing its field values
+    5. Delete issues
+-----------------
+Describe ISSUE attributes: 
+    * Title that summarize the issue (free-form text)
+    * Owner of the issue (free-form short text)
+    * Status indicator (a list of possible status values)
+    * Date creating (automatic assigned)
+    * Duration of issue: time to complete that issue (number)
+    * Estimate completion date (date, entered by user)
+------------------
+Steps to realize the web app
+    1. Create React classes and instantiate components
+    2. Create a bigger component by combine smaller components
+    3. Pass data among these components
+    4. Create components dynamically from data
