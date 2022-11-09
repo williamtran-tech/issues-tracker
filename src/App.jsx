@@ -140,4 +140,3 @@ class IssueList extends React.Component {
     }
 }
 ReactDOM.render(<IssueList />, contentNode);
-// Test commit
