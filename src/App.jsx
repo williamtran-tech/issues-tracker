@@ -46,7 +46,7 @@ class IssueRow extends React.Component {
 
     render() {
         const issue = this.props.issue;
-
+        // console.log("Render counting %d", issue.id);
         return (
             <tr>
                 <td>{issue.id}</td>
@@ -89,13 +89,50 @@ const issues = [
 ];
 
 class IssueList extends React.Component {
+    // Create constructor for init state
+    constructor() {
+        super();
+        // Initializing the state is as simple as setting the this.state variable to the state object.
+        this.state = { issues: [] };
+
+        // the "this" = constructor | After 2s the constructor is called, the create issue will be called
+        this.createTestIssue = this.createTestIssue.bind(this);
+        setTimeout(this.createTestIssue, 2000);
+    }
+
+    // componentDidMount use when the React component is ready to use
+    componentDidMount() {
+        this.loadData();
+    }
+    loadData() {
+        setTimeout(() => {
+            this.setState({ issues: issues });
+        }, 500);
+    }
+
+    //method to create Issue
+    createIssue(newIssue) {
+        const newIssues = this.state.issues.slice();
+        newIssues.id = this.state.issues.length + 1;
+        newIssues.push(newIssue);
+        this.setState({ issues: newIssues });
+    }
+
+    createTestIssue() {
+        this.createIssue({
+            status: 'New', owner: 'Pieta', created: new Date(),
+            title: 'Completion date should be optional',
+        })
+    }
+
     render() {
         return (
             <div>
                 <h1>Issues Tracker</h1>
                 <IssueFilter />
                 <hr />
-                <IssueTable issues={issues} />
+                <IssueTable issues={this.state.issues} />
+                <button onClick={this.createTestIssue}>Add</button>
                 <hr />
                 <IssueAdd />
             </div>

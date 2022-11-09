@@ -129,7 +129,7 @@ var IssueRow = function (_React$Component3) {
 
         value: function render() {
             var issue = this.props.issue;
-
+            // console.log("Render counting %d", issue.id);
             return React.createElement(
                 'tr',
                 null,
@@ -217,13 +217,58 @@ var issues = [{
 var IssueList = function (_React$Component5) {
     _inherits(IssueList, _React$Component5);
 
+    // Create constructor for init state
     function IssueList() {
         _classCallCheck(this, IssueList);
 
-        return _possibleConstructorReturn(this, (IssueList.__proto__ || Object.getPrototypeOf(IssueList)).apply(this, arguments));
+        // Initializing the state is as simple as setting the this.state variable to the state object.
+        var _this5 = _possibleConstructorReturn(this, (IssueList.__proto__ || Object.getPrototypeOf(IssueList)).call(this));
+
+        _this5.state = { issues: [] };
+
+        // the "this" = constructor | After 2s the constructor is called, the create issue will be called
+        _this5.createTestIssue = _this5.createTestIssue.bind(_this5);
+        setTimeout(_this5.createTestIssue, 2000);
+        return _this5;
     }
 
+    // componentDidMount use when the React component is ready to use
+
+
     _createClass(IssueList, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.loadData();
+        }
+    }, {
+        key: 'loadData',
+        value: function loadData() {
+            var _this6 = this;
+
+            setTimeout(function () {
+                _this6.setState({ issues: issues });
+            }, 500);
+        }
+
+        //method to create Issue
+
+    }, {
+        key: 'createIssue',
+        value: function createIssue(newIssue) {
+            var newIssues = this.state.issues.slice();
+            newIssues.id = this.state.issues.length + 1;
+            newIssues.push(newIssue);
+            this.setState({ issues: newIssues });
+        }
+    }, {
+        key: 'createTestIssue',
+        value: function createTestIssue() {
+            this.createIssue({
+                status: 'New', owner: 'Pieta', created: new Date(),
+                title: 'Completion date should be optional'
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
             return React.createElement(
@@ -236,7 +281,12 @@ var IssueList = function (_React$Component5) {
                 ),
                 React.createElement(IssueFilter, null),
                 React.createElement('hr', null),
-                React.createElement(IssueTable, { issues: issues }),
+                React.createElement(IssueTable, { issues: this.state.issues }),
+                React.createElement(
+                    'button',
+                    { onClick: this.createTestIssue },
+                    'Add'
+                ),
                 React.createElement('hr', null),
                 React.createElement(IssueAdd, null)
             );
