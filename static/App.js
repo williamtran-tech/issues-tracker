@@ -183,16 +183,41 @@ var IssueAdd = function (_React$Component4) {
     function IssueAdd() {
         _classCallCheck(this, IssueAdd);
 
-        return _possibleConstructorReturn(this, (IssueAdd.__proto__ || Object.getPrototypeOf(IssueAdd)).apply(this, arguments));
+        var _this4 = _possibleConstructorReturn(this, (IssueAdd.__proto__ || Object.getPrototypeOf(IssueAdd)).call(this));
+
+        _this4.handleSubmit = _this4.handleSubmit.bind(_this4);
+        return _this4;
     }
 
     _createClass(IssueAdd, [{
+        key: 'handleSubmit',
+        value: function handleSubmit(e) {
+            e.preventDefault();
+            var form = document.forms.issueAdd;
+            this.props.createIssue({
+                owner: form.owner.value,
+                title: form.title.value,
+                status: 'New',
+                created: new Date()
+            });
+
+            //clear the form for the next input
+            form.owner.value = "";
+            form.title.value = "";
+        }
+    }, {
         key: 'render',
         value: function render() {
             return React.createElement(
                 'div',
                 null,
-                'This is a placeholder for Issue Add entry form'
+                React.createElement(
+                    'form',
+                    { name: 'issueAdd', onSubmit: this.handleSubmit },
+                    React.createElement('input', { type: 'text', name: 'owner', placeholder: 'Owner' }),
+                    React.createElement('input', { type: 'text', name: 'title', placeholder: 'Title' }),
+                    React.createElement('input', { type: 'submit', value: 'Add' })
+                )
             );
         }
     }]);
@@ -227,8 +252,7 @@ var IssueList = function (_React$Component5) {
         _this5.state = { issues: [] };
 
         // the "this" = constructor | After 2s the constructor is called, the create issue will be called
-        _this5.createTestIssue = _this5.createTestIssue.bind(_this5);
-        setTimeout(_this5.createTestIssue, 2000);
+        _this5.createIssue = _this5.createIssue.bind(_this5);
         return _this5;
     }
 
@@ -261,14 +285,6 @@ var IssueList = function (_React$Component5) {
             this.setState({ issues: newIssues });
         }
     }, {
-        key: 'createTestIssue',
-        value: function createTestIssue() {
-            this.createIssue({
-                status: 'New', owner: 'Pieta', created: new Date(),
-                title: 'Completion date should be optional'
-            });
-        }
-    }, {
         key: 'render',
         value: function render() {
             return React.createElement(
@@ -282,13 +298,8 @@ var IssueList = function (_React$Component5) {
                 React.createElement(IssueFilter, null),
                 React.createElement('hr', null),
                 React.createElement(IssueTable, { issues: this.state.issues }),
-                React.createElement(
-                    'button',
-                    { onClick: this.createTestIssue },
-                    'Add'
-                ),
                 React.createElement('hr', null),
-                React.createElement(IssueAdd, null)
+                React.createElement(IssueAdd, { createIssue: this.createIssue })
             );
         }
     }]);
